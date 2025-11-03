@@ -1,0 +1,17 @@
+The Pack
+The standard 52-card pack is used.
+
+The Object of the Game
+The goal is to be the first player to get rid of all their cards. When a player puts their last card on the table and either is not doubted or, upon being doubted, is shown to have announced correctly, they win the game.
+
+The Deal
+Deal two or three cards at a time to each player starting on the left. On the last round of dealing, the cards are dealt out one at a time as far as they will go.
+
+Cards have no actual value but are played in sequence with aces first, then twos, then threes, and so on.
+
+The Play
+The player on the dealer’s left places from one to four cards, face down on the table. As they put them down, the player announces that they are putting down as many aces as the number of cards. For example, the player may put down three cards, saying, “three aces.” However, the cards need not be aces; the player does not have to tell the truth!
+
+Any player at the table may then say “I doubt it,” in which case the cards must be turned up. If the player’s statement was true the doubter must take up those three cards and all other cards that have been played on the table previously, into their hand. If the announcement was false in any respect, the player who didn’t tell the truth must take all the cards on the table, including those just put down, into their hand.
+
+When an announcement is not doubted, the cards remain face down in front of the player until, by the rules of the game, some player is compelled to pick them up and add them to their hand. After the first player’s announcement either has been doubted or not, the player on the left must put down one to four cards and announce that they are putting down that many twos. Next, the player to the left must put down and announce so many threes, and so on around the table. When a player in turn has announced kings, the next player starts over with aces again.
