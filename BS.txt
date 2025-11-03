@@ -1,4 +1,4 @@
-Game coded by: Megan Lu, Seniah Zachariah, Henry Bado, 
+Game coded by: Megan Lu, Seniah Zachariah, Henry Bado, Elizabeth Banahene
 
 The Pack
 The standard 52-card pack is used.
