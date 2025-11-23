@@ -52,6 +52,7 @@ def cpu_play(req_value,cpu_hand):
         cpu_play.append(cpu_hand.pop(index(req_value)))
     return(cpu_play)
         
+        
 def cpu_call(p_play,req_value,cpu_hand):
     """an algoritmn to guess whether or not a player is telling the truth
 
