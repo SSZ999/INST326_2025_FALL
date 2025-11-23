@@ -1,39 +1,50 @@
 import random
+
 class Turn:
-    shuffled_list = []
-    
-    def randomize_deck(self,game):
-        #where to define shuffled_list 
-        for card in game.deck:
-            random_card = random.choice(game.deck)
-            shuffled_list.append(random_card) 
-    
-    while shuffled_list: 
-                for player in game.player:
-                    card_distrubuted = shuffled_list.pop()
-                    self.deck.append(card_distrubuted) 
-    
+
+    def __init__(self):
+        self.center_pile = []
+
+    def randomize_deck(self, game):
+        random.shuffle(game.deck)
+
+    def deal_cards(self, game):
+        player_index = 0
+
+        while game.deck:
+            #game.players should be a list of total player objects
+            card = game.deck.pop()
+            game.players[player_index].deck.append(card)
+
+            player_index += 1
+            if player_index >= len(game.players):
+                player_index = 0
+
+    def distribute_cards(self, player):
+        while self.center_pile:
+            card = self.center_pile.pop(0)
+            player.deck.append(card)
+
     def win_check(self, player):
-        if not player.deck:
-            print(f"{self.name} won!")
+        if len(player.deck) == 0:
+            print(f"{player.name} won!")
 
-    
-    def distribute_cards(self,player,game):
-        #will this have to add the player2s hand or will pile already include it 
-        player.deck.append(game.pile)
+    def call_bluff(self, accuser, accused, req_value, played_cards):
+        #accuser and accused are player objects 
+        #played cards are the cards the accuser played that was called bs on
 
-    
-    def checking_bluff(self,game,player1,player2):
-        #fix 
-        bluff = False
-        for card in player2.cards_played:
+        for card in played_cards:
+            self.center_pile.append(card)
+
+        lied = False
+        for card in played_cards:
             if card != req_value:
-                bluff = True
-                break 
-        
-        if bluff:
-            print(f"{player1.name} called BS and was Correct.")
-            distribute_cards(p2_hand,p2_cards_played, pile)
+                lied = True
+                break
+
+        if lied:
+            print(f"{accused.name} lied and has to take the pile!")
+            self.distribute_cards(accused)
         else:
-            print(f"{player1.name} called BS and was Incorrect.") 
-            distribute_cards(p1_hand,p2_cards_played, pile)
+            print(f"{accuser.name} called bs and was wrong and has to take the pile!")
+            self.distribute_cards(accuser)
