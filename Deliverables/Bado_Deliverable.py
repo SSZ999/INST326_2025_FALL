@@ -1,54 +1,73 @@
-def turn(p_name, p_hand):
-    """Manage turns for each player in a BS session.
+class Player:
+    """Base class for BS player
     
-    Args:
-        p_name (str): name of the current player
-        P_hand (list): current player's set of cards
-        
-    Side Effects:
-        Appends player's played cards to the pile list
-        Appends player's proclaimed cards to the p_play list
-        
-    Returns:
-        None
+    Attributes:
+        name (str): player's name
+        deck (list): player's deck of cards
     """
     
+    def __init__(self, name, deck):
+        self.name = name
+        self.deck = []
+        
+    def turn(self):
+        raise NotImplementedError
+    
+class HumanPlayer(Player):
+    def turn(self, state, name, deck):
+        """Take turn as human player
+        
+        Args:
+            state (GameState): snapshot of current game state
+            name (str): name of current turn's player
+            deck (list of str): current player's hand
+        
+        Side Effects:
+            Removes selected cards from a player's hand
+            Appends cards to the pile
+            Appends cards to p_play, the play other players see
+        """
     #Checks if card is first in the deck (implied by Ace) to prompt bluff check
-    #or not
-    while len(p_hand) != 0:
-        if pile[-1] != "Ace":
-            try:
-                bluff_prompt = input(f"Do you doubt {p2_name}'s play? (Y/N)")
-                if bluff_prompt == "Y":
-                    checking_bluff(p1_name, p1_hand, p2_hand, p2_cards_played,
-                                   req_value, pile)
-                elif bluff_prompt == "N":
-                    continue
-            except:
-                print("Enter a valid answer.")
-                turn(p_name, p_hand)
-         
+    #or not        
+        while len(deck) != 0:
+            if deck[-1] != "Ace":
+                try:
+                    doubt = input(f"{name}, do you doubt the "
+                                  "last player's play? (Y/N)")
+                    if doubt == "Y":
+                        return doubt
+                    elif doubt == "N":
+                        break
+                except:
+                    print("Enter a valid answer.")
+            else:
+                break
+                    
         #Prints player's current hand and asks them to place cards on the deck
-        #(Only the current player knows what cards they actually put)       
-        print(p_hand)
-        play = input(f"{p_name}, please pick no more than 4" 
+        #(Only the current player knows what cards they actually put) 
+        print("Your current hand is " + deck)
+        play = input(f"{name}, please pick no more than 4" 
                      "cards to play: ").strip().split()
         for card in play:
-            p_hand.pop(card)
+            deck.pop(card)
             pile.append(card)
         
-        print(f"Your hand is now: {p_hand}")    
+        print(f"Your hand is now: {deck}")    
         
         #Asks player to state which cards they want the players to think they
         #put down
-        claim = input(f"{p_name}, indicate what cards you will"
+        claim = input(f"{name}, indicate what cards you will"
               "tell other players you put down: ").strip().split()
         for card in claim:
             p_play.append(card)
         
-        print(f"{p_name} put down the following cards: {p_play}")
+        print(f"{name} put down the following cards: {p_play}")
         
         #Checks if current player got rid of all their cards and prints
         #a statement if so
-        if len(p_hand) == 0:
-            print(f"{p_name} got rid of all their cards and won!")                   
+        if len(deck) == 0:
+            print(f"{name} got rid of all their cards and won!") 
+            
+#NOTE: p_play is the variable which represents the player saying what cards
+#they put down to the other players; this is what other players will
+#reference if they want to call someone's bluff             
