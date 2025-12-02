@@ -1,28 +1,6 @@
-"""
-cpu class 
-
-thinks about the future
-
-            determines if cpu should bluff, calls cpu_bluff
-
-            returns list that cpu will play for required number
-
-        cpu_bluff
-            calculates most probable bluff, what cards to substitute as what
-
-        cpu_call_bluff x 
-            has a simulated list of cards outside the computer's hand as well as
-            the center hand
-
-            when a player places a card, the computer can simulate that card's 
-            probability in relation to it's knowledge of what is 'outside'
-
-            returns True/False for bs/no bs
-"""
-
-class CpuPlayer:
-    def __init__(self,hand):
-        self.hand = hand
+from Zachariah_Deliverable import Turn
+from Bado_Deliverable import Player
+class CpuPlayer(Player):
     
     def call_bs():
         return None
@@ -44,10 +22,10 @@ class CpuPlayer:
             will remove selected cards from CPU's hand
         """
         play = []
-        while self.hand.count(req_value) != 0:
-            play.append(self.hand.pop(index(req_value)))
+        while self.deck.count(req_value) != 0:
+            play.append(self.deck.pop(req_value.index())
         if len(play) == 0:
-            return [x for x in self.hand if self.hand.count(x) > 1][0]
+            return [x for x in self.deck if self.deck.count(x) > 1][0]
         return(play)
     
     def cpu_call(self, p_play,req_value):
@@ -59,7 +37,7 @@ class CpuPlayer:
         """
         call = True
         possible_options = DECK.copy()
-        for i in self.hand:
+        for i in self.deck:
             possible_options.remove(i)
         
         for i in range(0,len(p_play)):
@@ -69,13 +47,13 @@ class CpuPlayer:
                 call = False
         
         if not call:
-            call_bs("cpu",p_play,req_value)
+            Turn.call_bluff(self.name,p_play,req_value)
         else:
             print("cpu will pass on calling bs")
-            cpu_play(req_value + 1)
+            self.cpu_play(req_value + 1)
 class CpuPlayerComeback(CpuPlayer):
     pass
     def cpu_call(self):
         # if cpu is losing, it will bluff more
-        if self.hand == max[self.hand] #all hands in one list:
-            return [x for x in self.hand if self.hand.count(x) > 1][0:2]
+        if self.hand == max[self.hand]: #all hands in one list:
+            return [x for x in self.deck if self.deck.count(x) > 1][0:2]
