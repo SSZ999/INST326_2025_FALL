@@ -23,7 +23,7 @@ class CpuPlayer(Player):
         """
         play = []
         while self.deck.count(req_value) != 0:
-            play.append(self.deck.pop(index(req_value)))
+            play.append(self.deck.pop(req_value.index())
         if len(play) == 0:
             return [x for x in self.deck if self.deck.count(x) > 1][0]
         return(play)
