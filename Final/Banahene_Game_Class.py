@@ -1,35 +1,61 @@
 from random import shuffle
+from Bado_Deliverable import HumanPlayer, Player
+from Deck import Deck
 
-class Deck:
-    
-    """
-    The Deck class creates and manages a deck of 52 cards.
-    
-    """
-    def __init__(self):
-        """Initializes a new deck of 52 cards and shuffles it.
 
-        Returns:
-            _type_: _description_
-        """
-        # Create the deck
-        self.deck_of_cards = [
-            f"{rank} of {suit}"
-            for suit in ["Spades", "Hearts", "Diamonds", "Clubs"]
-            for rank in ["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen", "King"]
-        ]
-        
-        # Shuffle the deck
-        shuffle(self.deck_of_cards)
-        
 class Game:
-    def __init__(self, num_players, player_names=None):
-        # Create a deck instance/object of a shuffled deck
-        d = Deck()
-        self.deck_of_cards = d.deck_of_cards
-        
+    """ The Game class manages the overall game flow."""
+    
+    def __init__(self, num_players, player_objects):
         self.num_players = num_players
-         
+        self.player = player_objects
+        
+        # Create and shuffle the deck
+        self.deck = Deck().cards
+        
+        # Create a center pile
+        self.center_pile = []
+        
+        #Deal cards to players
+        self.deal_cards()
+    
+    def deal_cards(self):
+        """Deals cards to players until the deck is empty."""
+        player_index = 0
+
+        while self.deck:
+            card = self.deck.pop()
+            self.player[player_index].deck.append(card)
+
+            player_index += 1
+            if player_index >= len(self.player):
+                player_index = 0
+                
+    def start_game(self):
+        """Starts the game loop."""
+        previous_claim = None
+        
+        while True:
+            for player in self.player:
+                print(f"\n{player.name}'s turn.")
+                claim = player.turn(self.center_pile, player.name, player.deck, previous_claim)
+                
+                # Update previous claim
+                previous_claim = claim
+                
+                # Check for win condition
+                if len(player.deck) == 0:
+                    print(f"{player.name} wins the game!")
+                    return
+                
+RANDOMMMMM
+
+class Game:
+    """ The Game class manages the overall game flow."""
+    
+    def __init__(self, num_players, player_names=None):
+        self.num_players = num_players
+        self.pla
         # Create a list for the player names   
         self.playernames = []
         
@@ -70,6 +96,7 @@ class Game:
             if len(hand) == 0:
                 print(f"{player} wins the game!")
                 break
+    def
 
         
 """
