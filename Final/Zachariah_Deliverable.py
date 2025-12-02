@@ -5,9 +5,6 @@ class Turn:
     def __init__(self):
         self.center_pile = []
 
-    def randomize_deck(self, game):
-        random.shuffle(game.deck)
-
     def deal_cards(self, game):
         player_index = 0
 
