@@ -1,5 +1,5 @@
 # Template for Final Project
-from Final.CPU import CpuPlayer
+from CPU import CpuPlayer
 from Banahene_Game_Class import Deck, Game
 from Bado_Deliverable import Player, HumanPlayer
 from Zachariah_Deliverable import Turn
