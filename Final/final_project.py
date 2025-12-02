@@ -1,5 +1,5 @@
 # Template for Final Project
-from CPU import CpuPlayer
+from Final.CPU import CpuPlayer
 
 #parse args here
 
