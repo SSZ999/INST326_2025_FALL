@@ -72,7 +72,7 @@ class CpuPlayer:
             call_bs("cpu",p_play,req_value)
         else:
             print("cpu will pass on calling bs")
-            cpu_play(req_value + 1)
+            self.cpu_play(req_value + 1)
 class CpuPlayerComeback(CpuPlayer):
     pass
     def cpu_call(self):
