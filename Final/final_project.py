@@ -5,7 +5,7 @@ from Bado_Deliverable import Player, HumanPlayer
 from Zachariah_Deliverable import Turn
 #parse args here
 
-import from argparse import ArgumentParser
+from argparse import ArgumentParser
 from sys import argv
 
 def parse_args(arglist):
@@ -26,9 +26,9 @@ def parse_args(arglist):
    
    return parser.parse_args(arglist)
 
-def main():
-    Game(args.computer_players,args.player_name)
+def main(args):
+    Game(int(args.computer_players),args.player_name)
     
 if __name__ == "__main__":
     args = parse_args(argv[1:])
-    main()
+    main(args)
