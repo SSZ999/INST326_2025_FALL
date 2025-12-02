@@ -55,5 +55,5 @@ class CpuPlayerComeback(CpuPlayer):
     pass
     def cpu_call(self):
         # if cpu is losing, it will bluff more
-        if self.hand == max[self.hand] #all hands in one list:
+        if self.hand == max[self.hand]: #all hands in one list:
             return [x for x in self.deck if self.deck.count(x) > 1][0:2]
