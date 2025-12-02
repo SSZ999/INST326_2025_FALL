@@ -1,19 +1,16 @@
-from random import shuffle
-from Bado_Deliverable import HumanPlayer, Player
 from Deck import Deck
-
+from Bado_Deliverable import HumanPlayer, Player
 
 class Game:
     """ The Game class manages the overall game flow."""
     
-    def __init__(self, num_players, player_objects):
-        self.num_players = num_players
-        self.player = player_objects
+    def __init__(self, player_objects):
+        self.players = player_objects
         
         # Create and shuffle the deck
         self.deck = Deck().cards
         
-        # Create a center pile
+        # Create a deck object and store it
         self.center_pile = []
         
         #Deal cards to players
@@ -24,13 +21,16 @@ class Game:
         player_index = 0
 
         while self.deck:
+            # give each player 1 card at a time
             card = self.deck.pop()
-            self.player[player_index].deck.append(card)
-
+            self.players[player_index].deck.append(card)
+            
+            # cycle through players
             player_index += 1
-            if player_index >= len(self.player):
+            if player_index >= len(self.players):
                 player_index = 0
                 
+
     def start_game(self):
         """Starts the game loop."""
         previous_claim = None
