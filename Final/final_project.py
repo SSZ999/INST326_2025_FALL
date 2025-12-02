@@ -1,8 +1,12 @@
 # Template for Final Project
 from Final.CPU import CpuPlayer
+from Banahene_Game_Class import Deck, Game
+from Bado_Deliverable import Player, HumanPlayer
+from Zachariah_Deliverable import Turn
+#parse args here
 
-
-import argparse 
+import from argparse import ArgumentParser
+from sys import argv
 
 def parse_args(arglist):
 
@@ -22,14 +26,9 @@ def parse_args(arglist):
    
    return parser.parse_args(arglist)
 
-from Banahene_Game_Class import Deck 
-from Banahene_Game_Class import Game
-from Bado_Deliverable import Player
-from Bado_Deliverable import HumanPlayer
-from Zachariah_Deliverable import Turn
-#parse args here
-
+def main():
+    Game(args.computer_players,args.player_name)
+    
 if __name__ == "__main__":
-    pass
-    #define player classes with arg info
-    # call game method with players as input
+    args = parse_args(argv[1:])
+    main()
