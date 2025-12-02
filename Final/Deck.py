@@ -5,10 +5,8 @@ class Deck:
     
     def __init__(self):
         """Initializes a new deck of 52 cards and shuffles it.
-
-        Returns:
-            _type_: _description_
         """
+        
         # Create the deck
         self.cards = [
             f"{rank} of {suit}"
