@@ -1,3 +1,7 @@
+# print player hand every round
+# add extra cpu
+# add headers for rounds
+# make cpu dumber
 
 import random
 
