@@ -114,13 +114,45 @@ class CpuPlayer(Player):
 
 # Turn manager class
 class TurnManager:
+    """An object that represents a turn.
+    
+    Attributes:
+        center_pile(list): initially empty center pile of cards"""
     def __init__(self):
+        """Initialize a new TurnManager class object
+        
+        Side effects:
+            Set attribute center_pile.
+        """
         self.center_pile = []
 
     def add_play(self, cards):
+        """adds the played cards from a player's turn to the center pile
+        
+        Args:
+            cards(list): cards the player just played
+        
+        Side effects: 
+            modifies the center_pile list by appending the given cards"""
         self.center_pile.extend(cards)
 
     def resolve_bluff(self, accuser, accused, played_cards, claimed_rank):
+        """Evaluate the BS call and determine if the accused player lied or not
+        Args:
+            accuser(Player): the player who called BS
+            accused(Player): the player whose play is being called bs on
+            played_cards(list): the cards just played by the accused player
+            claimed_rank(str): the rank the accused player said the cards were
+        
+        Returns:
+            accused or accuser(Player): the player who must pick up the center pile
+            (the loser of the call)
+        
+        Side effects:
+            appends the played cards to the center pile
+            clears the center pile after evaluating the bluff
+            adds the pile's cards to the accuser or accused players deck
+            prints the outcome of the bluff call"""
         lied = any(card != claimed_rank for card in played_cards)
         self.center_pile.extend(played_cards)
 
@@ -216,6 +248,18 @@ class Game:
 
 # Menu (4C: Max 1 human + 3 CPUs)
 def main():
+    """Starts the game (main menu of game).
+    prints the game title and gives a summary of the rules
+    asks the user for their name, and if left blank it defaults to "Human"
+    asks how many CPU players to include (1-3)
+    creates the human player and the chosen number of CPU players
+    sets up the Game object, which deals cards and runs the game 
+    
+    Side effects:
+        prints text to the console
+        reads user input for name and CPU count
+        creates player objects and starts the game setup 
+    """
     print("BS a.k.a I Doubt It Card Game — Up to 1 Human and 3 CPUs\n")
     print("Rules Summary:")
 
