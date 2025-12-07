@@ -201,7 +201,10 @@ class Game:
 
     def play(self):
         turn = 0
+        round_number = 1
         while True:
+            if turn == 0: 
+                print(f"\n\n>>>>>>>>>> ROUND {round_number} <<<<<<<<<<\n")
             player = self.players[turn]
             required_rank = self.get_required_rank()
 
@@ -210,10 +213,14 @@ class Game:
 
             if not player.has_cards():
                 print(f"{player.name} has no cards — SKIPPING turn.")
+                prev_turn = turn
                 turn = (turn + 1) % len(self.players)
                 self.advance_rank()
+                
+                if turn == 0:
+                    round_number += 1
                 continue
-
+                
             played_cards, claim = player.take_turn(required_rank)
             self.turn_manager.add_play(played_cards)
 
@@ -246,9 +253,13 @@ class Game:
                 if len(p.deck) == 0:
                     print(f"\n{p.name} wins!")
                     return p.name
-
+            
+            prev_turn = turn 
             turn = (turn + 1) % len(self.players)
             self.advance_rank()
+
+            if turn == 0:
+                round_number += 1 
 
 # Menu (4C: Max 1 human + 3 CPUs)
 def main():
