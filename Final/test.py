@@ -141,16 +141,19 @@ class TurnManager:
         self.center_pile.extend(cards)
 
     def resolve_bluff(self, accuser, accused, played_cards, claimed_rank):
-        """Evaluate the BS call and determine if the accused player lied or not
+        """Evaluate the BS call and determine if the accused player lied or not, 
+        if they did then they take the pile of cards, if they didn't then the accuser
+        takes the pile of cards.
+        
         Args:
             accuser(Player): the player who called BS
             accused(Player): the player whose play is being called bs on
-            played_cards(list): the cards just played by the accused player
-            claimed_rank(str): the rank the accused player said the cards were
+            played_cards(list): the actual cards the accused player played 
+            claimed_rank(str): the rank the accused player said they played
         
         Returns:
-            accused or accuser(Player): the player who must pick up the center pile
-            (the loser of the call)
+            taker(Player): the player who loses the BS call and must pick up the
+            center pile (the loser of the call)
         
         Side effects:
             appends the played cards to the center pile
@@ -160,19 +163,18 @@ class TurnManager:
         lied = any(card != claimed_rank for card in played_cards)
         self.center_pile.extend(played_cards)
 
+        taker = accused if lied else accuser 
+        
         if lied:
-            taken = self.center_pile.copy()
-            self.center_pile.clear()
-            accused.deck.extend(taken)
-            print(f"{accused.name} LIED and picks up {len(taken)} cards!")
-            return accused
+            print(f"{accused.name} LIED and picks up {len(self.center_pile)} cards!")
         else:
-            taken = self.center_pile.copy()
-            self.center_pile.clear()
-            accuser.deck.extend(taken)
-            print(f"{accuser.name} was WRONG and picks up {len(taken)} cards.")
-            return accuser
-
+            print(f"{accuser.name} was WRONG and picks up {len(self.center_pile)} cards.")
+        
+        taken = self.center_pile.copy()
+        self.center_pile.clear()
+        taker.deck.extend(taken)
+        
+        return taker
 # Game engine class
 class Game:
     def __init__(self, players):
