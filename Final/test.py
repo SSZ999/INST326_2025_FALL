@@ -12,14 +12,17 @@ MAX_PLAY = 4   # max cards per turn for both CPU & human
 
 # Deck class
 class Deck:
-    """Deck of 52 cards represented by ranks only."""
+    """Deck of 52 cards represented by ranks only. 
+    """
     def __init__(self):
+        """Initialize the deck with 52 cards and shuffle them."""
         self.cards = RANKS * COPIES_PER_RANK
         random.shuffle(self.cards)
 
 # Player base class
 class Player:
     """Base class for human & CPU players."""
+
     def __init__(self, name):
         self.name = name
         self.deck = []
@@ -177,7 +180,16 @@ class TurnManager:
         return taker
 # Game engine class
 class Game:
+    """Game engine to manage the flow of the BS card game.
+    """
+    
     def __init__(self, players):
+        """Initialize the Game with players, create and shuffle the deck,
+        and deal cards.
+
+        Args:
+            players (list): list of Player objects participating in the game
+        """
         self.players = players
         self.turn_manager = TurnManager()
         deck = Deck()
@@ -186,6 +198,7 @@ class Game:
         self.deal_cards()
 
     def deal_cards(self):
+        """Deal cards evenly to all players."""
         p = 0
         while self.deck:
             card = self.deck.pop()
@@ -196,12 +209,24 @@ class Game:
             print(f"{pl.name} received {len(pl.deck)} cards.")
 
     def get_required_rank(self):
+        """Get the current required rank for the turn.
+        
+        Returns:
+            str: the required rank for the current turn
+        """
         return RANKS[self.current_rank_index]
 
     def advance_rank(self):
+        """Advance to the next required rank for the turn."""
         self.current_rank_index = (self.current_rank_index + 1) % len(RANKS)
 
     def play(self):
+        """Start and manage the game play until a player wins.
+
+        Returns:
+            str: name of the winning player
+        """
+        
         turn = 0
         round_number = 1
         while True:
@@ -277,7 +302,7 @@ def main():
         reads user input for name and CPU count
         creates player objects and starts the game setup 
     """
-    print("BS a.k.a I Doubt It Card Game — Up to 1 Human and 3 CPUs\n")
+    print("BS a.k.a I Doubt It Card Game — Up to 1 Human and 6 CPUs\n")
     print("Rules Summary:")
 
     print("""
@@ -293,8 +318,8 @@ def main():
 
     while True:
         try:
-            num_cpu = int(input("How many CPU players? (1–3): "))
-            if 1 <= num_cpu <= 3:
+            num_cpu = int(input("How many CPU players? (2–6): "))
+            if 2 <= num_cpu <= 6:
                 break
         except:
             pass
