@@ -166,29 +166,63 @@ class CpuPlayer(Player):
 
 # Turn manager class
 class TurnManager:
+    """An object that represents a turn.
+    
+    Attributes:
+        center_pile(list): initially empty center pile of cards"""
     def __init__(self):
+        """Initialize a new TurnManager class object
+        
+        Side effects:
+            Set attribute center_pile.
+        """
         self.center_pile = []
 
     def add_play(self, cards):
+        """adds the played cards from a player's turn to the center pile
+        
+        Args:
+            cards(list): cards the player just played
+        
+        Side effects: 
+            modifies the center_pile list by appending the given cards"""
         self.center_pile.extend(cards)
 
     def resolve_bluff(self, accuser, accused, played_cards, claimed_rank):
+        """Evaluate the BS call and determine if the accused player lied or not, 
+        if they did then they take the pile of cards, if they didn't then the accuser
+        takes the pile of cards.
+        
+        Args:
+            accuser(Player): the player who called BS
+            accused(Player): the player whose play is being called bs on
+            played_cards(list): the actual cards the accused player played 
+            claimed_rank(str): the rank the accused player said they played
+        
+        Returns:
+            taker(Player): the player who loses the BS call and must pick up the
+            center pile (the loser of the call)
+        
+        Side effects:
+            appends the played cards to the center pile
+            clears the center pile after evaluating the bluff
+            adds the pile's cards to the accuser or accused players deck
+            prints the outcome of the bluff call"""
         lied = any(card != claimed_rank for card in played_cards)
         self.center_pile.extend(played_cards)
 
+        taker = accused if lied else accuser 
+        
         if lied:
-            taken = self.center_pile.copy()
-            self.center_pile.clear()
-            accused.deck.extend(taken)
-            print(f"{accused.name} LIED and picks up {len(taken)} cards!")
-            return accused
+            print(f"{accused.name} LIED and picks up {len(self.center_pile)} cards!")
         else:
-            taken = self.center_pile.copy()
-            self.center_pile.clear()
-            accuser.deck.extend(taken)
-            print(f"{accuser.name} was WRONG and picks up {len(taken)} cards.")
-            return accuser
-
+            print(f"{accuser.name} was WRONG and picks up {len(self.center_pile)} cards.")
+        
+        taken = self.center_pile.copy()
+        self.center_pile.clear()
+        taker.deck.extend(taken)
+        
+        return taker
 # Game engine class
 class Game:
     def __init__(self, players):
@@ -217,7 +251,10 @@ class Game:
 
     def play(self):
         turn = 0
+        round_number = 1
         while True:
+            if turn == 0: 
+                print(f"\n\n>>>>>>>>>> ROUND {round_number} <<<<<<<<<<\n")
             player = self.players[turn]
             required_rank = self.get_required_rank()
 
@@ -226,10 +263,14 @@ class Game:
 
             if not player.has_cards():
                 print(f"{player.name} has no cards — SKIPPING turn.")
+                prev_turn = turn
                 turn = (turn + 1) % len(self.players)
                 self.advance_rank()
+                
+                if turn == 0:
+                    round_number += 1
                 continue
-
+                
             played_cards, claim = player.take_turn(required_rank)
             self.turn_manager.add_play(played_cards)
 
@@ -262,12 +303,28 @@ class Game:
                 if len(p.deck) == 0:
                     print(f"\n{p.name} wins!")
                     return p.name
-
+            
+            prev_turn = turn 
             turn = (turn + 1) % len(self.players)
             self.advance_rank()
 
+            if turn == 0:
+                round_number += 1 
+
 # Menu (4C: Max 1 human + 3 CPUs)
 def main():
+    """Starts the game (main menu of game).
+    prints the game title and gives a summary of the rules
+    asks the user for their name, and if left blank it defaults to "Human"
+    asks how many CPU players to include (1-3)
+    creates the human player and the chosen number of CPU players
+    sets up the Game object, which deals cards and runs the game 
+    
+    Side effects:
+        prints text to the console
+        reads user input for name and CPU count
+        creates player objects and starts the game setup 
+    """
     print("BS a.k.a I Doubt It Card Game — Up to 1 Human and 3 CPUs\n")
     print("Rules Summary:")
 
