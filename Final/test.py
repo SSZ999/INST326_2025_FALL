@@ -21,9 +21,22 @@ class Deck:
 
 # Player base class
 class Player:
-    """Base class for human & CPU players."""
-
+    """Base class for human & CPU players.
+    
+    Attributes:
+        name (str): name of human or CPU player
+        deck (list): list of all cards in a human or CPU's hand    
+    """
+    
     def __init__(self, name):
+        """Creates instance of a player, human or CPU
+        
+        Args:
+            name (str): provided name of a BS player
+            
+        Side Effects:
+            Creates an empty list, deck, representing a player's hand
+        """
         self.name = name
         self.deck = []
 
@@ -31,10 +44,28 @@ class Player:
         return f"<Player {self.name} ({len(self.deck)} cards)>"
 
     def has_cards(self):
+        """Checks if a player has cards in their hand
+        
+        Returns:
+            Boolean statement of if the length of a player's deck is greater
+            than zero
+        """
         return len(self.deck) > 0
 
     def remove_cards_by_indices(self, indices):
-        """Remove cards by index (descending order) and return them."""
+        """Remove cards by index (descending order) and return them.
+        
+        Args:
+            indices (int): indices for cards in a deck
+            
+        Side Effects:
+            Creates an empty list, selected
+            Appends each index into the "selected" list
+            Removes specified cards from self.deck
+            
+        Returns:
+            "Selected" list containing removed cards
+        """
         selected = []
         for idx in sorted(indices, reverse=True):
             selected.append(self.deck.pop(idx))
@@ -44,7 +75,23 @@ class Player:
 
 # Human player class
 class HumanPlayer(Player):
+    """Child class inheriting from the Player class that represents
+    a human BS player."""
+    
     def take_turn(self, required_rank):
+        """Take a turn of BS
+        
+        Args:
+            required_rank (index): the rank player must play
+            
+        Side Effects:
+            Alters value of actual_cards based on which cards a player
+            puts down    
+            
+        Returns:
+            actual_cards, actual list of cards in player's hand
+            required_rank, the rank the next player must put down on their turn
+        """
         print(f"\n{self.name}'s turn — Required claim rank: {required_rank}")
         print("Your cards:")
         for i, card in enumerate(self.deck):
