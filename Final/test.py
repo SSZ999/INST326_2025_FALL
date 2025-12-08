@@ -276,12 +276,14 @@ class Game:
         
         turn = 0
         round_number = 1
+        
         while True:
-            if turn == 0: 
+            if turn == 0:
                 print(f"\n\n>>>>>>>>>> ROUND {round_number} <<<<<<<<<<\n")
+                
             player = self.players[turn]
             required_rank = self.get_required_rank()
-
+            
             print("\n" + "-"*50)
             print(f"TURN: {player.name} — Required Rank: {required_rank}")
 
