@@ -13,6 +13,9 @@ MAX_PLAY = 4   # max cards per turn for both CPU & human
 # Deck class
 class Deck:
     """Deck of 52 cards represented by ranks only. 
+    
+    Attributes:
+        cards (list): list of all cards in the deck
     """
     def __init__(self):
         """Initialize the deck with 52 cards and shuffle them."""
@@ -228,6 +231,10 @@ class TurnManager:
 # Game engine class
 class Game:
     """Game engine to manage the flow of the BS card game.
+    
+    Attributes:
+        players (list): list of Player objects participating in the game
+        deck (list): list of all cards in the deck
     """
     
     def __init__(self, players):
