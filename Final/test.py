@@ -92,7 +92,7 @@ class HumanPlayer(Player):
         """
         print(f"\n{self.name}'s turn — Required claim rank: {required_rank}")
         print("Your cards:")
-        for i, card in enumerate(self.deck):
+        for i, card in enumerate(sorted(self.deck, key = lambda x: RANKS.index(x))):
             print(f"[{i}] {card}", end='  ')
         print("\n")
 
