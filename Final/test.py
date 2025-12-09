@@ -284,7 +284,7 @@ class Game:
         turn = 0
         round_number = 1
         
-        print(f"\n\n>>>>>>>>>> ROUND {round_number} <<<<<<<<<<\n")
+        print(f"\n\n>>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
         
         while True:
             required_rank = self.get_required_rank()
