@@ -97,8 +97,9 @@ class HumanPlayer(Player):
         """
         print(f"\n{self.name}'s turn — Required claim rank: {required_rank}")
         print("Your cards:")
-        for i, card in enumerate(sorted(self.deck, key = lambda x: RANKS.index(x))):
-            print(f"[{i}] {card}", end='  ')
+        sorted_hand = sorted(range(len(self.deck)), key= lambda i: RANKS.index(self.deck[i]))
+        for display_i, real_i in enumerate(sorted_hand):
+            print(f"[{display_i}] {self.deck[real_i]}", end='  ')
         print("\n")
 
         while True:
@@ -118,18 +119,19 @@ class HumanPlayer(Player):
                 continue
 
             try:
-                indices = [int(p) for p in parts]
+                sorted_indices = [int(p) for p in parts]
             except:
                 print("Indices must be numbers.")
                 continue
 
-            if any(i < 0 or i >= len(self.deck) for i in indices):
+            if any(i < 0 or i >= len(sorted_hand) for i in sorted_indices):
                 print("Index out of range.")
                 continue
 
             break
-
-        actual_cards = self.remove_cards_by_indices(indices)
+        
+        real_indices = [sorted_hand[i] for i in sorted_indices]
+        actual_cards = self.remove_cards_by_indices(real_indices)
         print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS they are all {required_rank}.")
         return actual_cards, required_rank
 
