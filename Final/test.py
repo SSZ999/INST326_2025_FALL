@@ -285,7 +285,7 @@ class Game:
         turn = 0
         round_number = 1
         
-        print(f"\n\n>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
+        print(f"\n\n>>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
         
         while True:
             required_rank = self.get_required_rank()
@@ -312,7 +312,7 @@ class Game:
                 if isinstance(other, HumanPlayer):
                     print("\nYour hand:")
                     sorted_hand = sorted(range(len(other.deck)), key=lambda i: RANKS.index(other.deck[i]))
-                    for real_i in enumerate(sorted_hand):
+                    for display_i, real_i in enumerate(sorted_hand):
                         print(f"{other.deck[real_i]}", end='  ')
                     print("\n")
                     resp = input(f"{other.name}, call BS on {player.name}? (Y/N): ").strip().upper()
@@ -345,7 +345,7 @@ class Game:
             new_rank = self.get_required_rank()
             if new_rank == "Ace":
                 round_number += 1 
-                print(f"\n\n>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
+                print(f"\n\n>>>>>>>>>> ROUND {round_number} <<<<<<<<<<\n")
 
 # Menu (4C: Max 1 human + 3 CPUs)
 def main():
@@ -365,7 +365,7 @@ def main():
     print("Rules Summary:")
 
     print("""
-          - Players take turns playing 1 to 4 cards face down, claiming them as a specific rank
+          - Players take turns playing 1 to 4 cards face down, claiming them as a specific rank.
           - The required rank cycles through Ace to King.
           - Other players may call "BS" if they suspect a bluff.
           - If a bluff is called, and  the accused lied, they pick up the pile. 
