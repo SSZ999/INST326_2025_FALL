@@ -145,6 +145,22 @@ class CpuPlayer(Player):
         deck (list): all cards in a CPU's hand , inherited from Player class
 
     """
+    def memory_loss(self, rank_positions):
+        """Removes cards in cpu's 'memory' when taking a turn
+
+        Args:
+            rank_positions (list): the cards a cpu has of the desired rank
+
+        Returns:
+            rank_positions: (list): the cards a cpu has of the desired rank
+            
+        Side effects:
+            will remove a random amount of items from rank_positions
+        """
+        for i in range(0,random.randint(1,len(rank_positions))):
+            rank_positions.pop()
+        return rank_positions
+    
     def take_turn(self, required_rank):
         """determines the computer output when prompted to take a turn
 
@@ -157,10 +173,14 @@ class CpuPlayer(Player):
         
         Side effects:
             prints the cpu's claim
+            there is a 50% chance memory_loss() will be called
             removes played cards from cpu's hand
         """
         rank_positions = [i for i,c in enumerate(self.deck) if c == required_rank]
 
+        if random.random() == 1.0:
+            rank_positions = self.memory_loss(rank_positions)
+        
         if rank_positions:
             count_to_play = min(len(rank_positions), random.randint(1, min(MAX_PLAY, len(rank_positions))))
             indices = rank_positions[:count_to_play]
@@ -204,7 +224,6 @@ class CpuPlayer(Player):
             print(f"{self.name} passes.")
 
         return decision
-
 
 # Turn manager class
 class TurnManager:
