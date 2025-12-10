@@ -137,7 +137,28 @@ class HumanPlayer(Player):
 
 # CPU player class
 class CpuPlayer(Player):
+    """Child class inheriting from the Player class that represents
+    a computer BS player.
+
+    Attributes:
+        name (str): name of CPU player, inherited from Player class
+        deck (list): all cards in a CPU's hand , inherited from Player class
+
+    """
     def take_turn(self, required_rank):
+        """determines the computer output when prompted to take a turn
+
+        Args:
+            required_rank (int): the required number a computer has to play
+
+        Returns:
+            cards (list): the cards the cpu puts down into the center hand
+            required_rank (int): rank that will be used to judge if cpu is lying
+        
+        Side effects:
+            prints the cpu's claim
+            removes played cards from cpu's hand
+        """
         rank_positions = [i for i,c in enumerate(self.deck) if c == required_rank]
 
         if rank_positions:
@@ -154,6 +175,20 @@ class CpuPlayer(Player):
         return cards, required_rank
 
     def decide_call_bluff(self, claimed_player, claimed_rank, claimed_count):
+        """determines if a computer should call a bluff or not
+
+        Args:
+            claimed_player (Player): the Player class that went most recently
+            claimed_rank (int): the rank the claimed_player played in
+            claimed_count (int): the count of cards the player played
+
+        Returns:
+            decision (Boolean): 
+                True if CPU thinks claimed_player is lying
+                False if CPU thinks claimed_player is telling truth
+        Side effects:
+            prints whether or not CPU calls BS on claimed_player or not
+        """
         own_count = self.deck.count(claimed_rank)
         threshold = COPIES_PER_RANK - own_count
 
