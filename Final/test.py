@@ -65,6 +65,7 @@ class Player:
             Creates an empty list, selected
             Appends each index into the "selected" list
             Removes specified cards from self.deck
+            Reverses "selected" list
             
         Returns:
             "Selected" list containing removed cards
@@ -89,7 +90,19 @@ class HumanPlayer(Player):
             
         Side Effects:
             Alters value of actual_cards based on which cards a player
-            puts down    
+            puts down
+            Prints player name, required rank, and current player hand
+            sorted in ascending order
+            Creates variable "n", which is the number of cards the player
+            wants to put down (1-4) and is inputted in a print statement
+            Creates variable "raw", which is the raw input of the indices a user 
+            selects inputs 
+            Creates sorted_indices, a list for the inputted indices to be 
+            converting into integers and sorted in ascending order
+            Creates real_indices, a list of integers representing the indices
+            of cards to be removed
+            Creates actual_cards, a list, which represents 
+            the cards a player used
             
         Returns:
             actual_cards, actual list of cards in player's hand
@@ -97,14 +110,16 @@ class HumanPlayer(Player):
         """
         print(f"\n{self.name}'s turn — Required claim rank: {required_rank}")
         print("Your cards:")
-        sorted_hand = sorted(range(len(self.deck)), key= lambda i: RANKS.index(self.deck[i]))
+        sorted_hand = sorted(range(len(self.deck)), 
+                             key= lambda i: RANKS.index(self.deck[i]))
         for display_i, real_i in enumerate(sorted_hand):
             print(f"[{display_i}] {self.deck[real_i]}", end='  ')
         print("\n")
 
         while True:
             try:
-                n = int(input(f"How many cards do you want to play? (1 to {min(MAX_PLAY, len(self.deck))}): "))
+                n = int(input(f"How many cards do you want to play? "
+                              f"(1 to {min(MAX_PLAY, len(self.deck))}): "))
                 if 1 <= n <= min(MAX_PLAY, len(self.deck)):
                     break
             except:
@@ -130,9 +145,11 @@ class HumanPlayer(Player):
 
             break
         
-        real_indices = sorted((sorted_hand[i] for i in sorted_indices), reverse = True)
+        real_indices = sorted((sorted_hand[i] for i in sorted_indices)
+                              , reverse = True)
         actual_cards = self.remove_cards_by_indices(real_indices)
-        print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS they are all {required_rank}.")
+        print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS "
+              "they are all {required_rank}.")
         return actual_cards, required_rank
 
 # CPU player class
