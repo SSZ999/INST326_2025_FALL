@@ -30,6 +30,7 @@ class Turn:
             print(f"{player.name} won!")
 
     def call_bluff(self, accuser, accused, req_value, played_cards):
+        
         #accuser and accused are player objects 
         #played cards are the cards the accuser played that was called bs on
 
