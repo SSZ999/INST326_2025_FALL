@@ -285,7 +285,7 @@ class Game:
         turn = 0
         round_number = 1
         
-        print(f"\n\n>>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
+        print(f"\n\n>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
         
         while True:
             required_rank = self.get_required_rank()
@@ -340,7 +340,7 @@ class Game:
             new_rank = self.get_required_rank()
             if new_rank == "Ace":
                 round_number += 1 
-                print(f"\n\n>>>>>>>>>> ROUND {round_number} <<<<<<<<<<\n")
+                print(f"\n\n>>>>>>>>>>>>>>>>>>>> ROUND {round_number} <<<<<<<<<<<<<<<<<<<<<\n")
 
 # Menu (4C: Max 1 human + 3 CPUs)
 def main():
@@ -360,7 +360,7 @@ def main():
     print("Rules Summary:")
 
     print("""
-          - Players take turns playing 1 to 4 cards face down, claiming them as a specific rank.
+          - Players take turns playing 1 to 4 cards face down, claiming them as a specific rank
           - The required rank cycles through Ace to King.
           - Other players may call "BS" if they suspect a bluff.
           - If a bluff is called, and  the accused lied, they pick up the pile. 
