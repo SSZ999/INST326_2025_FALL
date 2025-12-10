@@ -178,8 +178,7 @@ class CpuPlayer(Player):
         """
         rank_positions = [i for i,c in enumerate(self.deck) if c == required_rank]
 
-        if random.random() == 1.0:
-            rank_positions = self.memory_loss(rank_positions)
+        rank_positions = self.memory_loss(rank_positions) if random.random() == 1.0 else rank_positions
         
         if rank_positions:
             count_to_play = min(len(rank_positions), random.randint(1, min(MAX_PLAY, len(rank_positions))))
