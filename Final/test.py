@@ -297,6 +297,11 @@ class Game:
 
         Args:
             players (list): list of Player objects participating in the game
+            
+        Side Effects:
+            Creates a TurnManager object
+                Initializes and shuffles a Deck object
+                Deals cards to all players  
         """
         self.players = players
         self.turn_manager = TurnManager()
@@ -306,7 +311,11 @@ class Game:
         self.deal_cards()
 
     def deal_cards(self):
-        """Deal cards evenly to all players."""
+        """Deal cards evenly to all players.
+        
+        Side Effects:
+            Distributes cards from the deck to each player's hand
+        """
         p = 0
         while self.deck:
             card = self.deck.pop()
@@ -318,18 +327,27 @@ class Game:
 
     def get_required_rank(self):
         """Get the current required rank for the turn.
-        
+=
         Returns:
             str: the required rank for the current turn
         """
         return RANKS[self.current_rank_index]
 
     def advance_rank(self):
-        """Advance to the next required rank for the turn."""
+        """Advance to the next required rank for the turn.
+        
+        Side Effects:
+            Updates the current_rank_index to the next rank in RANKS
+            """
+            
         self.current_rank_index = (self.current_rank_index + 1) % len(RANKS)
 
     def play(self):
+        
         """Start and manage the game play until a player wins.
+        
+        Side Effects:
+            Prints the current turn, required rank, and player actions.
 
         Returns:
             str: name of the winning player
