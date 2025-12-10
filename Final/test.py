@@ -130,7 +130,7 @@ class HumanPlayer(Player):
 
             break
         
-        real_indices = [sorted_hand[i] for i in sorted_indices]
+        real_indices = sorted((sorted_hand[i] for i in sorted_indices), reverse = True)
         actual_cards = self.remove_cards_by_indices(real_indices)
         print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS they are all {required_rank}.")
         return actual_cards, required_rank
@@ -216,7 +216,6 @@ class TurnManager:
             adds the pile's cards to the accuser or accused players deck
             prints the outcome of the bluff call"""
         lied = any(card != claimed_rank for card in played_cards)
-        self.center_pile.extend(played_cards)
 
         taker = accused if lied else accuser 
         
