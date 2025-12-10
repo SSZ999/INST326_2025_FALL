@@ -310,6 +310,11 @@ class Game:
             for i in range(1, len(self.players)):
                 other = self.players[(turn+i) % len(self.players)]
                 if isinstance(other, HumanPlayer):
+                    print("\nYour hand:")
+                    sorted_hand = sorted(range(len(other.deck)), key=lambda i: RANKS.index(other.deck[i]))
+                    for real_i in enumerate(sorted_hand):
+                        print(f"{other.deck[real_i]}", end='  ')
+                    print("\n")
                     resp = input(f"{other.name}, call BS on {player.name}? (Y/N): ").strip().upper()
                     if resp == "Y":
                         caller = other
