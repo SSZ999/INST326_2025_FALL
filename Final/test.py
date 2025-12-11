@@ -65,6 +65,7 @@ class Player:
             Creates an empty list, selected
             Appends each index into the "selected" list
             Removes specified cards from self.deck
+            Reverses "selected" list
             
         Returns:
             "Selected" list containing removed cards
@@ -89,7 +90,19 @@ class HumanPlayer(Player):
             
         Side Effects:
             Alters value of actual_cards based on which cards a player
-            puts down    
+            puts down
+            Prints player name, required rank, and current player hand
+            sorted in ascending order
+            Creates variable "n", which is the number of cards the player
+            wants to put down (1-4) and is inputted in a print statement
+            Creates variable "raw", which is the raw input of the indices a user 
+            selects inputs 
+            Creates sorted_indices, a list for the inputted indices to be 
+            converting into integers and sorted in ascending order
+            Creates real_indices, a list of integers representing the indices
+            of cards to be removed
+            Creates actual_cards, a list, which represents 
+            the cards a player used
             
         Returns:
             actual_cards, actual list of cards in player's hand
@@ -97,14 +110,16 @@ class HumanPlayer(Player):
         """
         print(f"\n{self.name}'s turn — Required claim rank: {required_rank}")
         print("Your cards:")
-        sorted_hand = sorted(range(len(self.deck)), key= lambda i: RANKS.index(self.deck[i]))
+        sorted_hand = sorted(range(len(self.deck)), 
+                             key= lambda i: RANKS.index(self.deck[i]))
         for display_i, real_i in enumerate(sorted_hand):
             print(f"[{display_i}] {self.deck[real_i]}", end='  ')
         print("\n")
 
         while True:
             try:
-                n = int(input(f"How many cards do you want to play? (1 to {min(MAX_PLAY, len(self.deck))}): "))
+                n = int(input(f"How many cards do you want to play? "
+                              f"(1 to {min(MAX_PLAY, len(self.deck))}): "))
                 if 1 <= n <= min(MAX_PLAY, len(self.deck)):
                     break
             except:
@@ -130,16 +145,58 @@ class HumanPlayer(Player):
 
             break
         
-        real_indices = sorted((sorted_hand[i] for i in sorted_indices), reverse = True)
+        real_indices = sorted((sorted_hand[i] for i in sorted_indices)
+                              , reverse = True)
         actual_cards = self.remove_cards_by_indices(real_indices)
-        print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS they are all {required_rank}.")
+        print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS "
+              "they are all {required_rank}.")
         return actual_cards, required_rank
 
 # CPU player class
 class CpuPlayer(Player):
+    """Child class inheriting from the Player class that represents
+    a computer BS player.
+
+    Attributes:
+        name (str): name of CPU player, inherited from Player class
+        deck (list): all cards in a CPU's hand , inherited from Player class
+
+    """
+    def memory_loss(self, rank_positions):
+        """Removes cards in cpu's 'memory' when taking a turn
+
+        Args:
+            rank_positions (list): the cards a cpu has of the desired rank
+
+        Returns:
+            rank_positions: (list): the cards a cpu has of the desired rank
+            
+        Side effects:
+            will remove a random amount of items from rank_positions
+        """
+        for i in range(0,random.randint(1,len(rank_positions))):
+            rank_positions.pop()
+        return rank_positions
+    
     def take_turn(self, required_rank):
+        """determines the computer output when prompted to take a turn
+
+        Args:
+            required_rank (int): the required number a computer has to play
+
+        Returns:
+            cards (list): the cards the cpu puts down into the center hand
+            required_rank (int): rank that will be used to judge if cpu is lying
+        
+        Side effects:
+            prints the cpu's claim
+            there is a 50% chance memory_loss() will be called
+            removes played cards from cpu's hand
+        """
         rank_positions = [i for i,c in enumerate(self.deck) if c == required_rank]
 
+        rank_positions = self.memory_loss(rank_positions) if random.random() == 1.0 else rank_positions
+        
         if rank_positions:
             count_to_play = min(len(rank_positions), random.randint(1, min(MAX_PLAY, len(rank_positions))))
             indices = rank_positions[:count_to_play]
@@ -154,6 +211,20 @@ class CpuPlayer(Player):
         return cards, required_rank
 
     def decide_call_bluff(self, claimed_player, claimed_rank, claimed_count):
+        """determines if a computer should call a bluff or not
+
+        Args:
+            claimed_player (Player): the Player class that went most recently
+            claimed_rank (int): the rank the claimed_player played in
+            claimed_count (int): the count of cards the player played
+
+        Returns:
+            decision (Boolean): 
+                True if CPU thinks claimed_player is lying
+                False if CPU thinks claimed_player is telling truth
+        Side effects:
+            prints whether or not CPU calls BS on claimed_player or not
+        """
         own_count = self.deck.count(claimed_rank)
         threshold = COPIES_PER_RANK - own_count
 
@@ -169,7 +240,6 @@ class CpuPlayer(Player):
             print(f"{self.name} passes.")
 
         return decision
-
 
 # Turn manager class
 class TurnManager:
@@ -244,6 +314,11 @@ class Game:
 
         Args:
             players (list): list of Player objects participating in the game
+            
+        Side Effects:
+            Creates a TurnManager object
+                Initializes and shuffles a Deck object
+                Deals cards to all players  
         """
         self.players = players
         self.turn_manager = TurnManager()
@@ -253,7 +328,11 @@ class Game:
         self.deal_cards()
 
     def deal_cards(self):
-        """Deal cards evenly to all players."""
+        """Deal cards evenly to all players.
+        
+        Side Effects:
+            Distributes cards from the deck to each player's hand
+        """
         p = 0
         while self.deck:
             card = self.deck.pop()
@@ -265,18 +344,27 @@ class Game:
 
     def get_required_rank(self):
         """Get the current required rank for the turn.
-        
+=
         Returns:
             str: the required rank for the current turn
         """
         return RANKS[self.current_rank_index]
 
     def advance_rank(self):
-        """Advance to the next required rank for the turn."""
+        """Advance to the next required rank for the turn.
+        
+        Side Effects:
+            Updates the current_rank_index to the next rank in RANKS
+            """
+            
         self.current_rank_index = (self.current_rank_index + 1) % len(RANKS)
 
     def play(self):
+        
         """Start and manage the game play until a player wins.
+        
+        Side Effects:
+            Prints the current turn, required rank, and player actions.
 
         Returns:
             str: name of the winning player
