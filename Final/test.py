@@ -2,7 +2,7 @@
 # add extra cpu
 # add headers for rounds
 # make cpu dumber
-
+import argparse
 import random
 
 # Constants
@@ -349,18 +349,25 @@ class Game:
 
 # Menu (4C: Max 1 human + 3 CPUs)
 def main():
-    """Starts the game (main menu of game).
+    """starts the game (main menu of game).
     prints the game title and gives a summary of the rules
     asks the user for their name, and if left blank it defaults to "Human"
-    asks how many CPU players to include (1-3)
+    asks how many CPU players to include (2-6)
     creates the human player and the chosen number of CPU players
-    sets up the Game object, which deals cards and runs the game 
+    sets up the Game object, which deals cards and runs the game
+    optionally processes command line arguments using argparse (--name and --cpus) 
     
     Side effects:
         prints text to the console
         reads user input for name and CPU count
         creates player objects and starts the game setup 
     """
+    parser = argparse.ArgumentParser(description="Play BS card game.")
+    parser.add_argument("--name", type=str, help="Name of the human player.")
+    parser.add_argument("--cpus", type=int, help="Number of CPU players (2-6).")
+    
+    args = parser.parse_args()
+    
     print("BS a.k.a I Doubt It Card Game — Up to 1 Human and 6 CPUs\n")
     print("Rules Summary:")
 
@@ -372,17 +379,28 @@ def main():
           - If a bluff is called, and the accused is truthful, the accuser picks up the pile.
           - First player to get rid of all their cards wins!\n
           """)
-    name = input("Enter your name: ").strip() or "Human"
+    
+    if args.name:
+        name = args.name
+    else:
+        name = input("Enter your name: ").strip() or "Human"
+    
     human = HumanPlayer(name)
 
-    while True:
-        try:
-            num_cpu = int(input("How many CPU players? (2–6): "))
-            if 2 <= num_cpu <= 6:
-                break
-        except:
-            pass
-        print("Invalid number.")
+    if args.cpus is not None:
+        num_cpu = args.cpus
+        if not (2 <= num_cpu <= 6):
+            print("CPU count must be between 2 and 6.")
+            return 
+    else:
+        while True:
+            try:
+                num_cpu = int(input("How many CPU players? (2–6): "))
+                if 2 <= num_cpu <= 6:
+                    break
+            except:
+                pass
+            print("Invalid number.")
 
     players = [human] + [CpuPlayer(f"CPU{i+1}") for i in range(num_cpu)]
 
