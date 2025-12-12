@@ -149,7 +149,7 @@ class HumanPlayer(Player):
                               , reverse = True)
         actual_cards = self.remove_cards_by_indices(real_indices)
         print(f"{self.name} placed {len(actual_cards)} cards and CLAIMS "
-              "they are all {required_rank}.")
+              f"they are all {required_rank}.")
         return actual_cards, required_rank
 
 # CPU player class
