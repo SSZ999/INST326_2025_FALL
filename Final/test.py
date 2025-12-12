@@ -265,7 +265,7 @@ class TurnManager:
             modifies the center_pile list by appending the given cards"""
         self.center_pile.extend(cards)
 
-    def resolve_bluff(self, accuser, accused, played_cards, claimed_rank):
+    def resolve_bluff(self, accuser, accused, played_cards, claimed_rank, verbose=True):
         """Evaluate the BS call and determine if the accused player lied or not, 
         if they did then they take the pile of cards, if they didn't then the accuser
         takes the pile of cards.
@@ -275,6 +275,8 @@ class TurnManager:
             accused(Player): the player whose play is being called bs on
             played_cards(list): the actual cards the accused player played 
             claimed_rank(str): the rank the accused player said they played
+            verbose(bool,optional parameter): if it is True, it prints additional information
+            such as the number of cards in the center pile
         
         Returns:
             taker(Player): the player who loses the BS call and must pick up the
@@ -285,6 +287,9 @@ class TurnManager:
             clears the center pile after evaluating the bluff
             adds the pile's cards to the accuser or accused players deck
             prints the outcome of the bluff call"""
+            
+        if verbose:
+            print(f"Center pile currently has {len(self.center_pile)} cards.")
         lied = any(card != claimed_rank for card in played_cards)
 
         taker = accused if lied else accuser 
